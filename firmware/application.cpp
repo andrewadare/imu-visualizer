@@ -1,4 +1,3 @@
-// Based on Euler.ino example
 
 #include "NAxisMotion.h"
 
@@ -12,10 +11,6 @@ void setup()
   I2C.begin();
   imu.initSensor(); // I2C Address can be changed here if needed
   imu.setOperationMode(OPERATION_MODE_NDOF);
-
-  // Default update mode is AUTO.
-  // MANUAL requires calling update functions prior to calling the read functions
-  // Setting to MANUAL requires fewer reads to the sensor
   imu.setUpdateMode(MANUAL);
 }
 
@@ -24,31 +19,30 @@ void loop()
   if ((millis() - prevTime) >= streamPeriod)
   {
     prevTime = millis();
-    imu.updateEuler();        // Update the Euler data into the structure of the object
-    imu.updateCalibStatus();  // Update the Calibration Status
+    imu.updateQuat();
+    imu.updateCalibStatus();
 
     Serial.print("Time:");
     Serial.print(prevTime); // ms
 
-    Serial.print(",H:");
-    Serial.print(imu.readEulerHeading()); // deg
+    // Quaternion values 
+    Serial.print(",qw:");
+    Serial.print(imu.readQuatW());
+    Serial.print(",qx:");
+    Serial.print(imu.readQuatX());
+    Serial.print(",qy:");
+    Serial.print(imu.readQuatY());
+    Serial.print(",qz:");
+    Serial.print(imu.readQuatZ());
 
-    Serial.print(",R:");
-    Serial.print(imu.readEulerRoll()); // deg
-
-    Serial.print(",P:");
-    Serial.print(imu.readEulerPitch()); // deg
 
     // Calib status values range from 0 - 3
     Serial.print(",A:");
     Serial.print(imu.readAccelCalibStatus());
-
     Serial.print(",M:");
     Serial.print(imu.readMagCalibStatus());
-
     Serial.print(",G:");
     Serial.print(imu.readGyroCalibStatus());
-
     Serial.print(",S:");
     Serial.print(imu.readSystemCalibStatus());
 
