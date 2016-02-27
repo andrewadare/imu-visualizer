@@ -93,8 +93,7 @@ function send_imu_data(client::WebSockets.WebSocket)
     set_speed(sp, 115200)
     set_frame(sp, ndatabits=8, parity=SP_PARITY_NONE, nstopbits=1)
 
-    # angles = ["H", "R", "P"] # Heading, roll, pitch
-    keys = ["Time" ,"H", "R", "P", "A", "M", "G", "S"]
+    keys = ["Time" ,"qw", "qx", "qy", "qz", "A", "M", "G", "S"]
     nkeys = length(keys)
 
     while true

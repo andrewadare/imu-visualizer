@@ -137,9 +137,9 @@ define( function( require ) {
 
   // Update box orientation from websocket message data
   function updateBox( data ) {
-    box.rotation.x = -data.P * Math.PI / 180;
-    box.rotation.y = -data.R * Math.PI / 180;
-    box.rotation.z = Math.PI - data.H * Math.PI / 180;
+    var q = new THREE.Quaternion( data.qx, data.qy, data.qz, data.qw );
+    q.normalize();
+    box.quaternion.set( q.x, q.y, q.z, q.w );
     render();
   }
 
