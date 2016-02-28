@@ -86,11 +86,32 @@ function line2dict(line::AbstractString, keys::Array{AbstractString})
     d
 end
 
+function validate_args()
+
+    if length(ARGS) != 2
+        println("Usage:")
+        println("julia imu-server.jl address speed")
+        println("\nAvailable ports:\n")
+        list_ports()
+        exit()
+    end
+
+    port_address = ARGS[1]
+    if !ischardev(port_address)
+        error("\n\n$port_address is not a valid character device.\n\n")
+    end
+
+    bps = ARGS[2]
+    if !isnumber(bps)
+        error("\n\n$bps is not a valid connection speed.\n\n")
+    end
+end
 
 function send_imu_data(client::WebSockets.WebSocket)
-    sp = SerialPort("/dev/cu.usbmodem1421")
+    port_address = ARGS[1]
+    sp = SerialPort(port_address)
     open(sp)
-    set_speed(sp, 115200)
+    set_speed(sp, parse(Int, ARGS[2]))
     set_frame(sp, ndatabits=8, parity=SP_PARITY_NONE, nstopbits=1)
 
     keys = ["Time" ,"qw", "qx", "qy", "qz", "A", "M", "G", "S"]
@@ -144,7 +165,10 @@ end
 httph.events["error"]  = (client, err) -> println(err)
 httph.events["listen"] = (port)        -> println("Listening on $port...")
 
+validate_args()
+
 # Instantiate and start a websockets/http server
 server = Server(httph, wsh)
+
 println("Starting WebSocket server.")
 run(server, 8000)
