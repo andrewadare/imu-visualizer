@@ -21,7 +21,7 @@ Find files recursively in `dir` containing `substr`, e.g.
 Returns result as an array of strings.
 """
 function find(dir::AbstractString, substr::AbstractString)
-    local out = Vector{ASCIIString}()
+    local out = Vector{String}()
 
     function findall(dir, substr)
         f = readdir(abspath(dir))
@@ -50,7 +50,7 @@ create and return a Dict object. If the line can't be split into at least n
 items, an empty Dict is returned.
 """
 function line2dict(line::AbstractString, n::Integer)
-    d = Dict{ASCIIString, Float64}()
+    d = Dict{String, Float64}()
     a = split(line, ",")
     length(a) == n || return d
     for item in a
@@ -72,7 +72,7 @@ included in the Dict. If the line can't be split into at least length(keys),
 an empty Dict is returned.
 """
 function line2dict(line::AbstractString, keys::Array{AbstractString})
-    d = Dict{ASCIIString, Float64}()
+    d = Dict{String, Float64}()
     a = split(line, ",")
     length(a) >= length(keys) || return d
     for item in a
