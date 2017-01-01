@@ -155,7 +155,7 @@ httph = HttpHandler() do req::Request, res::Response
     for file in files
         if startswith("/$file", req.resource)
             println("serving /", file)
-            return Response(open(readall, file))
+            return Response(open(readstring, file))
         end
     end
 
