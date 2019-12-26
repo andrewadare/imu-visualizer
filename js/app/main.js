@@ -86,7 +86,7 @@ define( function( require ) {
       axisTess: 50
     } );
     localAxes.forEach( function( item ) {
-      box.add( item )
+      box.add( item );
     } );
     var axes = coords.axes( {
       axisLength: 10,
@@ -94,7 +94,7 @@ define( function( require ) {
       axisTess: 50
     } );
     axes.forEach( function( item ) {
-      scene.add( item )
+      scene.add( item );
     } );
 
     // CAMERA TRACKBALL CONTROLS
@@ -151,7 +151,7 @@ define( function( require ) {
       id: 0,
       date: Date.now()
     } ) );
-  }
+  };
 
   // Websocket client message handler
   ws.onmessage = function( event ) {
@@ -161,13 +161,13 @@ define( function( require ) {
     var handler = [ {
       type: 'angles',
       f: updateBox
-    } ]
+    } ];
 
     handler.forEach( function( m ) {
       if ( m.type === msg.type ) {
         m.f( msg.data );
       }
     } );
-  }
+  };
 
 } );
